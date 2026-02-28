@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.toolkit.network.client;
+package com.bytehonor.sdk.toolkit.http.client;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,8 +31,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.toolkit.network.config.HttpConfig;
-import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
+import com.bytehonor.sdk.toolkit.http.config.HttpConfig;
+import com.bytehonor.sdk.toolkit.http.exception.HttpToolkitException;
 
 
 /**
@@ -88,7 +88,7 @@ public class HttpBeautifyClient {
 
     private String execute(HttpUriRequest request) {
         if (client == null) {
-            throw new NetworkToolkitException("httpClient not init");
+            throw new HttpToolkitException("httpClient not init");
         }
 
         CloseableHttpResponse response = null;
@@ -103,11 +103,11 @@ public class HttpBeautifyClient {
                 EntityUtils.consume(entity);
             } else {
                 LOG.error("statusCode:{}, reason:{}", statusCode, statusLine.getReasonPhrase());
-                throw new NetworkToolkitException(String.valueOf(statusCode));
+                throw new HttpToolkitException(String.valueOf(statusCode));
             }
         } catch (Exception e) {
             LOG.error("execute", e);
-            throw new NetworkToolkitException(e);
+            throw new HttpToolkitException(e);
         } finally {
             close(response);
         }
@@ -129,9 +129,9 @@ public class HttpBeautifyClient {
      * 
      * @param url
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
-    public static String get(String url) throws NetworkToolkitException {
+    public static String get(String url) throws HttpToolkitException {
         return get(url, null, null);
     }
 
@@ -141,9 +141,9 @@ public class HttpBeautifyClient {
      * @param url
      * @param params
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
-    public static String get(String url, Map<String, String> params) throws NetworkToolkitException {
+    public static String get(String url, Map<String, String> params) throws HttpToolkitException {
         return get(url, params, null);
     }
 
@@ -154,10 +154,10 @@ public class HttpBeautifyClient {
      * @param params
      * @param headers
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
     public static String get(String url, Map<String, String> params, Map<String, String> headers)
-            throws NetworkToolkitException {
+            throws HttpToolkitException {
         Objects.requireNonNull(url, "url");
         if (params != null && params.isEmpty() == false) {
             StringBuilder sb = new StringBuilder(url);
@@ -191,9 +191,9 @@ public class HttpBeautifyClient {
      * @param url
      * @param params
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
-    public static String postForm(String url, Map<String, String> params) throws NetworkToolkitException {
+    public static String postForm(String url, Map<String, String> params) throws HttpToolkitException {
         return postForm(url, params, null);
     }
 
@@ -204,10 +204,10 @@ public class HttpBeautifyClient {
      * @param params
      * @param headers
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
     public static String postForm(String url, Map<String, String> params, Map<String, String> headers)
-            throws NetworkToolkitException {
+            throws HttpToolkitException {
         Objects.requireNonNull(url, "url");
 
         HttpPost request = new HttpPost(url);
@@ -228,7 +228,7 @@ public class HttpBeautifyClient {
             request.setEntity(new UrlEncodedFormEntity(pairs));
         } catch (UnsupportedEncodingException e) {
             LOG.error("postForm error", e);
-            throw new NetworkToolkitException(e);
+            throw new HttpToolkitException(e);
         }
 
         return self().execute(request);
@@ -264,7 +264,7 @@ public class HttpBeautifyClient {
             request.setEntity(new StringEntity(json, Charset.forName(UTF_8)));
         } catch (Exception e) {
             LOG.error("postJson error", e);
-            throw new NetworkToolkitException(e);
+            throw new HttpToolkitException(e);
         }
         return self().execute(request);
     }
@@ -293,25 +293,25 @@ public class HttpBeautifyClient {
             request.setEntity(new StringEntity(xml, Charset.forName(UTF_8)));
         } catch (Exception e) {
             LOG.error("postJson error", e);
-            throw new NetworkToolkitException(e);
+            throw new HttpToolkitException(e);
         }
         return self().execute(request);
     }
 
-    public static String uploadMedia(String url, Map<String, String> params, File file) throws NetworkToolkitException {
+    public static String uploadMedia(String url, Map<String, String> params, File file) throws HttpToolkitException {
         return upload(url, params, file, "media");
     }
 
-    public static String uploadPic(String url, Map<String, String> params, File file) throws NetworkToolkitException {
+    public static String uploadPic(String url, Map<String, String> params, File file) throws HttpToolkitException {
         return upload(url, params, file, "pic");
     }
 
-    public static String uploadFile(String url, Map<String, String> params, File file) throws NetworkToolkitException {
+    public static String uploadFile(String url, Map<String, String> params, File file) throws HttpToolkitException {
         return upload(url, params, file, "file");
     }
 
     public static String upload(String url, Map<String, String> params, File file, String fileKey)
-            throws NetworkToolkitException {
+            throws HttpToolkitException {
         Objects.requireNonNull(url, "url");
 
         throw new RuntimeException("TODO");
@@ -373,7 +373,7 @@ public class HttpBeautifyClient {
             fileout.close();
         } catch (Exception e) {
             LOG.error("download url:{}", url, e);
-            throw new NetworkToolkitException(e);
+            throw new HttpToolkitException(e);
         } finally {
             close(null);
         }

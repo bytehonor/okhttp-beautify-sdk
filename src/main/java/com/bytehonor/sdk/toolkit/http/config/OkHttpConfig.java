@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.toolkit.network.config;
+package com.bytehonor.sdk.toolkit.http.config;
 
 public class OkHttpConfig {
 

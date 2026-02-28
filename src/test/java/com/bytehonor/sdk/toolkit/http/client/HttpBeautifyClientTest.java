@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.toolkit.network.client;
+package com.bytehonor.sdk.toolkit.http.client;
 
 import static org.junit.Assert.assertTrue;
 
@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
+import com.bytehonor.sdk.toolkit.http.exception.HttpToolkitException;
 
 public class HttpBeautifyClientTest {
 
@@ -25,7 +25,7 @@ public class HttpBeautifyClientTest {
             headers.put("User-Agent", "Second");
             String html = HttpBeautifyClient.get("https://vue.bytehonor.com", null, headers);
             LOG.info("html:{}", html);
-        } catch (NetworkToolkitException e) {
+        } catch (HttpToolkitException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }

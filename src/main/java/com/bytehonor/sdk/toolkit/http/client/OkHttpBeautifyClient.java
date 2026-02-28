@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.toolkit.network.client;
+package com.bytehonor.sdk.toolkit.http.client;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.toolkit.network.config.OkHttpConfig;
-import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
+import com.bytehonor.sdk.toolkit.http.config.OkHttpConfig;
+import com.bytehonor.sdk.toolkit.http.exception.HttpToolkitException;
 
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -64,7 +64,7 @@ public class OkHttpBeautifyClient {
         return LazzyHolder.SINGLE;
     }
 
-    private String execute(Request request) throws NetworkToolkitException {
+    private String execute(Request request) throws HttpToolkitException {
         String resultString = null;
         Response response = null;
         try {
@@ -78,7 +78,7 @@ public class OkHttpBeautifyClient {
             body.close();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
-            throw new NetworkToolkitException(e);
+            throw new HttpToolkitException(e);
         } finally {
             if (response != null) {
                 response.close(); // 20211024
@@ -92,9 +92,9 @@ public class OkHttpBeautifyClient {
      * 
      * @param url
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
-    public static String get(String url) throws NetworkToolkitException {
+    public static String get(String url) throws HttpToolkitException {
         return get(url, null, null);
     }
 
@@ -104,9 +104,9 @@ public class OkHttpBeautifyClient {
      * @param url
      * @param params
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
-    public static String get(String url, Map<String, String> params) throws NetworkToolkitException {
+    public static String get(String url, Map<String, String> params) throws HttpToolkitException {
         return get(url, params, null);
     }
 
@@ -117,10 +117,10 @@ public class OkHttpBeautifyClient {
      * @param params
      * @param headers
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
     public static String get(String url, Map<String, String> params, Map<String, String> headers)
-            throws NetworkToolkitException {
+            throws HttpToolkitException {
         Objects.requireNonNull(url, "url");
         if (params != null && params.isEmpty() == false) {
             StringBuilder sb = new StringBuilder(url);
@@ -155,9 +155,9 @@ public class OkHttpBeautifyClient {
      * @param url
      * @param params
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
-    public static String postForm(String url, Map<String, String> params) throws NetworkToolkitException {
+    public static String postForm(String url, Map<String, String> params) throws HttpToolkitException {
         return postForm(url, params, null);
     }
 
@@ -168,10 +168,10 @@ public class OkHttpBeautifyClient {
      * @param params
      * @param headers
      * @return
-     * @throws NetworkToolkitException
+     * @throws HttpToolkitException
      */
     public static String postForm(String url, Map<String, String> params, Map<String, String> headers)
-            throws NetworkToolkitException {
+            throws HttpToolkitException {
         Objects.requireNonNull(url, "url");
         FormBody.Builder formBody = new FormBody.Builder();
         if (params != null && params.isEmpty() == false) {
@@ -274,20 +274,20 @@ public class OkHttpBeautifyClient {
         return self().execute(request);
     }
 
-    public static String uploadMedia(String url, Map<String, String> params, File file) throws NetworkToolkitException {
+    public static String uploadMedia(String url, Map<String, String> params, File file) throws HttpToolkitException {
         return upload(url, params, file, "media");
     }
 
-    public static String uploadPic(String url, Map<String, String> params, File file) throws NetworkToolkitException {
+    public static String uploadPic(String url, Map<String, String> params, File file) throws HttpToolkitException {
         return upload(url, params, file, "pic");
     }
 
-    public static String uploadFile(String url, Map<String, String> params, File file) throws NetworkToolkitException {
+    public static String uploadFile(String url, Map<String, String> params, File file) throws HttpToolkitException {
         return upload(url, params, file, "file");
     }
 
     public static String upload(String url, Map<String, String> params, File file, String fileKey)
-            throws NetworkToolkitException {
+            throws HttpToolkitException {
         Objects.requireNonNull(url, "url");
         MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (file != null) {
@@ -347,11 +347,11 @@ public class OkHttpBeautifyClient {
                 }
                 fos.flush();
             } else {
-                throw new NetworkToolkitException("Unexpected response " + response.toString());
+                throw new HttpToolkitException("Unexpected response " + response.toString());
             }
         } catch (IOException e) {
             LOG.error("download url:{}", url, e);
-            throw new NetworkToolkitException(e);
+            throw new HttpToolkitException(e);
         } finally {
             if (is != null) {
                 try {

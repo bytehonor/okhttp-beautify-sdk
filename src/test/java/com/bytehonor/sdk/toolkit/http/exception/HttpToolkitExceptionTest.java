@@ -1,10 +1,10 @@
-package com.bytehonor.sdk.toolkit.network.exception;
+package com.bytehonor.sdk.toolkit.http.exception;
 
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-public class NetworkToolkitExceptionTest {
+public class HttpToolkitExceptionTest {
 
     @Test
     public void testOkhttpBasicSdkException() {

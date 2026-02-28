@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.toolkit.network.client;
+package com.bytehonor.sdk.toolkit.http.client;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
+import com.bytehonor.sdk.toolkit.http.exception.HttpToolkitException;
 
 public class OkHttpBeautifyClientTest {
 
@@ -27,7 +27,7 @@ public class OkHttpBeautifyClientTest {
             // 测测header是否是浏览器的
             String html = OkHttpBeautifyClient.get("https://www.bytehonor.com");
             LOG.info("html:{}", html);
-        } catch (NetworkToolkitException e) {
+        } catch (HttpToolkitException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }
@@ -49,7 +49,7 @@ public class OkHttpBeautifyClientTest {
                         OkHttpBeautifyClient.get("https://www.baidu.com");
                         ai.incrementAndGet();
                         countDownLatch.countDown();
-                    } catch (NetworkToolkitException e) {
+                    } catch (HttpToolkitException e) {
                         LOG.error("xxxx error:{}", e.getMessage());
                     }
                 }
@@ -129,7 +129,7 @@ public class OkHttpBeautifyClientTest {
             String text = "helloworld1";
             String res = OkHttpBeautifyClient.postPlain(url, text);
             LOG.info("res:{}", res);
-        } catch (NetworkToolkitException e) {
+        } catch (HttpToolkitException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }
